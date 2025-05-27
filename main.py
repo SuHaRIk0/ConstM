@@ -10,8 +10,8 @@ article_encoder = joblib.load("article_encoder_1.pkl")
 model = load_model("constitution_model_1.h5")
 law = pd.read_csv("law.csv")
 
-main = Flask(__name__)
-CORS(main, origins=["https://lemon-glacier-056db2703.6.azurestaticapps.net"])
+app = Flask(__name__)
+CORS(app, origins=["https://lemon-glacier-056db2703.6.azurestaticapps.net"])
 
 def preprocess(text):
     tfidf_vector = vectorizer.transform([text])
