@@ -11,7 +11,7 @@ model = load_model("constitution_model_1.h5")
 law = pd.read_csv("law.csv")
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://lemon-glacier-056db2703.6.azurestaticapps.net"])
 
 def preprocess(text):
     tfidf_vector = vectorizer.transform([text])
