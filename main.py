@@ -10,8 +10,8 @@ article_encoder = joblib.load("article_encoder_1.pkl")
 model = load_model("constitution_model_1.h5")
 law = pd.read_csv("law.csv")
 
-app = Flask(__name__)
-CORS(app, origins=["https://lemon-glacier-056db2703.6.azurestaticapps.net"])
+main = Flask(__name__)
+CORS(main, origins=["https://lemon-glacier-056db2703.6.azurestaticapps.net"])
 
 def preprocess(text):
     tfidf_vector = vectorizer.transform([text])
@@ -56,5 +56,5 @@ def predict():
         "confidence": confidence
     })
 
-#if __name__ == "__main__":
+# if __name__ == "__main__":
 #    app.run(debug=False, port=5000)
