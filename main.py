@@ -17,6 +17,10 @@ def preprocess(text):
     tfidf_vector = vectorizer.transform([text])
     return tfidf_vector.toarray().astype(np.float32)
 
+@app.route("/", methods=["GET"])
+def home():
+    return "✅ API is running. Use POST /predict to get a response."
+
 @app.route("/predict", methods=["POST"])
 def predict():
     data = request.json
