@@ -71,12 +71,12 @@
 </head>
 <body>
   <div class="container">
-    <h1><i class="bi bi-shield-check"></i> Перевірка твердження на відповідність Конституції</h1>
+    <h1 id="pageTitle"><i class="bi bi-shield-check"></i> Перевірка твердження на відповідність Конституції</h1>
 
     <div class="row">
       <!-- Вхід та кнопки -->
       <div class="col-md-8 form-section">
-        <label for="inputText" class="form-label fw-semibold">Введіть твердження:</label>
+        <label for="inputText" class="form-label fw-semibold" id="inputLabel">Введіть твердження:</label>
         <textarea id="inputText" class="form-control mb-3" rows="4" placeholder="Наприклад: Кожен має право на освіту..."></textarea>
 
         <div class="d-flex justify-content-between align-items-center gap-2">
@@ -86,10 +86,10 @@
           </select>
 
           <div class="ms-auto d-flex gap-2">
-            <button class="btn btn-primary" onclick="checkStatement()">
+            <button class="btn btn-primary" onclick="checkStatement()" id="checkButton">
               <i class="bi bi-search"></i> Перевірити
             </button>
-            <button class="btn btn-secondary" onclick="clearFields()">
+            <button class="btn btn-secondary" onclick="clearFields()" id="clearButton">
               <i class="bi bi-x-circle"></i> Очистити
             </button>
           </div>
@@ -98,7 +98,7 @@
 
       <!-- Історія -->
       <div class="col-md-4 form-section">
-        <label class="fw-semibold">Історія:</label>
+        <label class="fw-semibold" id="historyLabel">Історія:</label>
         <div class="history-box" id="historyBox">
           <ul id="historyList" class="list-unstyled mb-0 small"></ul>
         </div>
@@ -109,15 +109,69 @@
     <div id="result" style="display:none;">
       <hr />
       <div class="card-result">
-        <p><span class="result-label">Вердикт:</span> <span id="verdict"></span></p>
-        <p><span class="result-label">Стаття:</span> <span id="article"></span></p>
-        <p><span class="result-label">Опис:</span><br><span id="description"></span></p>
-        <p><span class="result-label">Довіра:</span> <span id="confidence"></span></p>
+        <p><span class="result-label" id="verdictLabel">Вердикт:</span> <span id="verdict"></span></p>
+        <p><span class="result-label" id="articleLabel">Стаття:</span> <span id="article"></span></p>
+        <p><span class="result-label" id="descriptionLabel">Опис:</span><br><span id="description"></span></p>
+        <p><span class="result-label" id="confidenceLabel">Довіра:</span> <span id="confidence"></span></p>
       </div>
     </div>
   </div>
 
   <script>
+    const translations = {
+      "uk": {
+        title: "Перевірка твердження на відповідність Конституції",
+        inputLabel: "Введіть твердження:",
+        check: "Перевірити",
+        clear: "Очистити",
+        history: "Історія:",
+        verdict: "Вердикт:",
+        article: "Стаття:",
+        description: "Опис:",
+        confidence: "Довіра:",
+        placeholder: "Наприклад: Кожен має право на освіту..."
+      },
+      "en": {
+        title: "Statement Check Against the Constitution",
+        inputLabel: "Enter your statement:",
+        check: "Check",
+        clear: "Clear",
+        history: "History:",
+        verdict: "Verdict:",
+        article: "Article:",
+        description: "Description:",
+        confidence: "Confidence:",
+        placeholder: "For example: Everyone has the right to education..."
+      }
+    };
+
+    function changeLanguage(lang) {
+      const t = translations[lang];
+      if (!t) return;
+
+      document.getElementById("pageTitle").innerHTML = `<i class="bi bi-shield-check"></i> ${t.title}`;
+      document.getElementById("inputLabel").textContent = t.inputLabel;
+      document.getElementById("checkButton").innerHTML = `<i class="bi bi-search"></i> ${t.check}`;
+      document.getElementById("clearButton").innerHTML = `<i class="bi bi-x-circle"></i> ${t.clear}`;
+      document.getElementById("historyLabel").textContent = t.history;
+      document.getElementById("verdictLabel").textContent = t.verdict;
+      document.getElementById("articleLabel").textContent = t.article;
+      document.getElementById("descriptionLabel").textContent = t.description;
+      document.getElementById("confidenceLabel").textContent = t.confidence;
+      document.getElementById("inputText").placeholder = t.placeholder;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const langSelect = document.getElementById("languageSelect");
+      langSelect.addEventListener("change", () => {
+        const selectedLang = langSelect.value === "English" ? "en" : "uk";
+        changeLanguage(selectedLang);
+      });
+
+      // Встановити початкову мову
+      changeLanguage("uk");
+    });
+
     async function checkStatement() {
       const input = document.getElementById("inputText").value.trim();
       const resultDiv = document.getElementById("result");
